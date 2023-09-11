@@ -20,8 +20,11 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-
-
+  ENV_FILE: ${{ secrets.ENV }}
+run: |
+  echo $ENV_FILE | base64 --decode > app.docker.env
+  
+  
 jobs:
   build:
 
@@ -32,7 +35,6 @@ jobs:
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
