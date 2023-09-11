@@ -11,5 +11,6 @@ jobs:
       - name: publish
         uses: pennsignals/publish_docker-compose@v0.1.0
         with:
+          version: 'latest'
           docker_compose: docker-compose.yml
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
