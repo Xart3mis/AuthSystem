@@ -21,9 +21,6 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
   ENV_FILE: ${{ secrets.ENV }}
-run: |
-  echo $ENV_FILE | base64 --decode > app.docker.env
-  
   
 jobs:
   build:
@@ -36,6 +33,8 @@ jobs:
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
     steps:
+      - name: Write env file
+        run: echo $ENV_FILE | base64 --decode > app.docker.env
       - name: Checkout repository
         uses: actions/checkout@v3
 
