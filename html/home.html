@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      "
+    >
+      <div
+        style="
+          margin: auto;
+          border-radius: 7.5px;
+          padding: 10px;
+          text-align: center;
+          background-color: black;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 50%;
+          height: 50%;
+        "
+      >
+        <h1 id="greeting" style="color: white; width: 50%">Loading...</h1>
+      </div>
+    </div>
+    <script>
+      axios
+        .get("/api/users/me", { withCredentials: true })
+        .then((res) => {
+          document.getElementById("greeting").innerHTML = res?.data.message;
+        })
+        .catch((err) => {
+          if (err) {
+            axios
+              .get("/api/auth/refresh", { withCredentials: true })
+              .then((res) => {
+                axios
+                  .get("/api/users/me", { withCredentials: true })
+                  .then((res) => {
+                    document.getElementById("greeting").innerHTML =
+                      res?.data.message;
+                  });
+              })
+              .catch((err) => {
+                console.error(err);
+                if (err) window.location.replace("/login");
+              });
+          }
+        });
+    </script>
+  </body>
+</html>
