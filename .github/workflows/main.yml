@@ -1,12 +1,15 @@
 name: docker-compose-publish
-on: push
+on:
+  workflow_dispatch:
+  push:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: echo '${{ SECRETS.ENV }}' | base64 --decode > app.docker.env
-      - uses: pennsignals/publish_docker-compose@v0.1.0
+      - name: publish
+        uses: pennsignals/publish_docker-compose@v0.1.0
         with:
           docker_compose: docker-compose.yml
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
