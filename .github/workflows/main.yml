@@ -1,0 +1,11 @@
+name: docker-compose-publish
+'on': push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo '${{ SECRETS.ENV }}' | base64 --decode > app.docker.env
+      - uses: pennsignals/publish_docker-compose@v0.1.0
+        with:
+          docker_compose: docker-compose.yml
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
