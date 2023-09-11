@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1
+
 FROM alpine:latest AS html-stage
 
 WORKDIR /app
@@ -28,5 +29,5 @@ COPY --from=html-stage /app/html/ /html
 COPY app.docker.env /app.env
 
 EXPOSE 9000 
-
+LABEL name="auth_system"
 CMD ["/auth_system"]
